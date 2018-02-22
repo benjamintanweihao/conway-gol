@@ -1,0 +1,9 @@
+[package]
+name = "conway-gol"
+version = "0.1.0"
+authors = ["Benjamin Tan Wei Hao <benjamintanweihao@gmail.com>"]
+
+[dependencies.sdl2]
+version = "0.31"
+default-features = false
+features = ["gfx"]
