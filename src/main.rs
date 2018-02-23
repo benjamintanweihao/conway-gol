@@ -1,3 +1,9 @@
+mod gol;
+
+use gol::cell::Cell;
+
 fn main() {
-    println!("Ohai!");
+    let cell = Cell::new(0, 0);
+
+    println!("The cell is at {:#?}", cell);
 }
