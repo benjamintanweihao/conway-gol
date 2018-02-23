@@ -1,5 +1,7 @@
 # Conway's Game of Life in Rust
 
+[![Build Status](https://travis-ci.org/benjamintanweihao/conway-gol.svg?branch=master)](https://travis-ci.org/benjamintanweihao/conway-gol)
+
 Me learning some Rust. 
 
 ## Progress
