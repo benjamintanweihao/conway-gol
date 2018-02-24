@@ -3,7 +3,6 @@ name = "conway-gol"
 version = "0.1.0"
 authors = ["Benjamin Tan Wei Hao <benjamintanweihao@gmail.com>"]
 
-[dependencies.sdl2]
-version = "0.31"
-default-features = false
-features = ["gfx"]
+[dependencies]
+sdl2 = "0.31.0"
+

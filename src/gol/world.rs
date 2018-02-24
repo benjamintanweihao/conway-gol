@@ -1,5 +1,5 @@
+pub type Position = (usize, usize);
 type Grid = Vec<Vec<bool>>;
-type Position = (usize, usize);
 
 pub const SIZE: usize = 50;
 
