@@ -1,3 +1,4 @@
+#[allow(dead_code)]
 pub mod text_renderer {
     use gol::world::{World, SIZE};
 
