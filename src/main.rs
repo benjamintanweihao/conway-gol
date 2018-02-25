@@ -8,9 +8,10 @@ use gol::gl_renderer::gl_renderer;
 use gol::text_renderer::text_renderer;
 
 fn main() {
-    let world = World::new(combination());
+    let size = 50;
+    let world = World::new(combination(), size);
     gl_renderer::render(&world);
-    // text_renderer::render(world);
+    // text_renderer::render(&world);
 }
 #[allow(dead_code)]
 fn combination() -> Vec<Position> {

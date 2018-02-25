@@ -1,17 +1,18 @@
 pub type Position = (usize, usize);
 type Grid = Vec<Vec<bool>>;
-
-pub const SIZE: usize = 50;
+type Size = usize;
 
 #[derive(Debug)]
 pub struct World {
     grid: Grid,
+    pub size: Size,
 }
 
 impl World {
-    pub fn new(positions: Vec<Position>) -> World {
+    pub fn new(positions: Vec<Position>, size: Size) -> World {
         World {
-            grid: World::make_grid(positions.clone()),
+            grid: World::make_grid(positions.clone(), size),
+            size: size,
         }
     }
 
@@ -20,12 +21,12 @@ impl World {
         self.grid[x][y] == true
     }
 
-    fn make_grid(positions: Vec<Position>) -> Grid {
-        let mut grid = Vec::with_capacity(SIZE);
+    fn make_grid(positions: Vec<Position>, size: Size) -> Grid {
+        let mut grid = Vec::with_capacity(size);
 
-        for _y in 0..SIZE {
-            let mut row = Vec::with_capacity(SIZE);
-            for _x in 0..SIZE {
+        for _y in 0..size {
+            let mut row = Vec::with_capacity(size);
+            for _x in 0..size {
                 row.push(false);
             }
             grid.push(row);
@@ -40,9 +41,10 @@ impl World {
 
     pub fn tick(&self) -> World {
         let mut new_grid = self.grid.clone();
+        let size = self.size;
 
-        for y in 0..SIZE {
-            for x in 0..SIZE {
+        for y in 0..size {
+            for x in 0..size {
                 if new_grid[x][y] == true {
                     match self.count_neighbours((x, y)) {
                         0...1 => new_grid[x][y] = false,
@@ -58,33 +60,37 @@ impl World {
             }
         }
 
-        World { grid: new_grid }
+        World {
+            grid: new_grid,
+            size: size,
+        }
+    }
+
+    fn dec(&self, n: usize) -> usize {
+        if (n as i32) - 1 < 0 {
+            self.size - 1
+        } else {
+            n - 1
+        }
+    }
+
+    fn inc(&self, n: usize) -> usize {
+        if n + 1 == self.size {
+            0
+        } else {
+            n + 1
+        }
     }
 
     fn count_neighbours(&self, position: Position) -> i32 {
-        fn dec(n: usize) -> usize {
-            if (n as i32) - 1 < 0 {
-                SIZE - 1
-            } else {
-                n - 1
-            }
-        }
-
-        fn inc(n: usize) -> usize {
-            if n + 1 == SIZE {
-                0
-            } else {
-                n + 1
-            }
-        }
-
         let grid = &self.grid;
         let (x, y) = position;
 
-        return (grid[dec(x)][dec(y)] as i32) + (grid[x][dec(y)] as i32)
-            + (grid[inc(x)][dec(y)] as i32) + (grid[dec(x)][y] as i32)
-            + (grid[inc(x)][y] as i32) + (grid[dec(x)][inc(y)] as i32)
-            + (grid[x][inc(y)] as i32) + (grid[inc(x)][inc(y)] as i32);
+        return (grid[self.dec(x)][self.dec(y)] as i32) + (grid[x][self.dec(y)] as i32)
+            + (grid[self.inc(x)][self.dec(y)] as i32) + (grid[self.dec(x)][y] as i32)
+            + (grid[self.inc(x)][y] as i32) + (grid[self.dec(x)][self.inc(y)] as i32)
+            + (grid[x][self.inc(y)] as i32)
+            + (grid[self.inc(x)][self.inc(y)] as i32);
     }
 }
 
@@ -94,7 +100,7 @@ mod test {
 
     #[test]
     fn empty_world_has_no_neighbors() {
-        let world = World::new(Vec::new());
+        let world = World::new(Vec::new(), 50);
 
         assert_eq!(0, world.count_neighbours((0, 0)));
     }
@@ -102,7 +108,7 @@ mod test {
     #[test]
     fn counting_with_neighbors() {
         let positions = vec![(0, 0), (1, 0), (2, 0)];
-        let world = World::new(positions);
+        let world = World::new(positions, 50);
 
         assert_eq!(3, world.count_neighbours((1, 1)));
         assert_eq!(2, world.count_neighbours((2, 1)));

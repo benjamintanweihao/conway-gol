@@ -5,7 +5,7 @@ pub mod gl_renderer {
     use sdl2::event::Event;
     use sdl2::keyboard::Keycode;
     use std::{thread, time};
-    use gol::world::{World, SIZE};
+    use gol::world::World;
 
     const CELL_SIZE: u32 = 4;
 
@@ -28,6 +28,7 @@ pub mod gl_renderer {
         let duration = time::Duration::from_millis(50);
 
         let mut world = world.tick();
+        let size = world.size;
 
         'running: loop {
             for event in event_pump.poll_iter() {
@@ -47,8 +48,8 @@ pub mod gl_renderer {
             let cell_color = Color::RGB(0, 255, 0);
             canvas.set_draw_color(cell_color);
 
-            for y in 0..SIZE {
-                for x in 0..SIZE {
+            for y in 0..size {
+                for x in 0..size {
                     if world.is_alive((x, y)) == true {
                         let _ = canvas.fill_rect(Rect::new(
                             (x as i32) * (CELL_SIZE as i32),
