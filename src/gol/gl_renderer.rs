@@ -26,7 +26,7 @@ pub mod gl_renderer {
         canvas.present();
 
         let mut event_pump = sdl_context.event_pump().unwrap();
-        let duration = time::Duration::from_millis(300);
+        let duration = time::Duration::from_millis(200);
 
         let mut world = world.tick();
         let size = world.size;

@@ -9,6 +9,9 @@ pub mod rle_reader {
         let file = BufReader::new(&f);
         let mut positions = Vec::new();
 
+        let mut x = 0;
+        let mut y = 0;
+
         'outer: for (n, line) in file.lines().enumerate() {
             let l = line.unwrap();
             if n == 0 {
@@ -16,9 +19,6 @@ pub mod rle_reader {
                 println!("Header: {}", l);
             } else {
                 let mut num_chars = String::from(""); // used to track numbers
-                let mut x = 0;
-                let mut y = 0;
-
                 for c in l.chars() {
                     if c == '!' {
                         break 'outer;
@@ -78,7 +78,6 @@ mod test {
 
     #[test]
     fn read_glider() {
-        // rle_reader::read("./res/tm.lif");
         let expected = vec![(0, 0), (1, 0), (2, 0), (2, 1), (1, 2)];
         let actual = rle_reader::read("./res/glider.lif");
 
