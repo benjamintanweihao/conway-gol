@@ -1,4 +1,4 @@
-mod rle_reader {
+pub mod rle_reader {
     use std::io::BufReader;
     use std::io::BufRead;
     use std::fs::File;
@@ -12,7 +12,7 @@ mod rle_reader {
         'outer: for (n, line) in file.lines().enumerate() {
             let l = line.unwrap();
             if n == 0 {
-                // Read header
+                // TODO: Read header and return the size.
                 println!("Header: {}", l);
             } else {
                 let mut num_chars = String::from(""); // used to track numbers
@@ -25,8 +25,14 @@ mod rle_reader {
                     } else {
                         match c {
                             '$' => {
-                                x = 0;
-                                y += 1;
+                                if num_chars != "" {
+                                    let num = num_chars.parse::<i32>().unwrap();
+                                    x = 0;
+                                    y += num;
+                                } else {
+                                    x = 0;
+                                    y += 1;
+                                }
                                 num_chars = String::from("");
                             }
                             'o' => {
@@ -34,7 +40,6 @@ mod rle_reader {
                                     let num = num_chars.parse::<i32>().unwrap();
                                     // Create number of o's
                                     for n in 0..num {
-                                        println!("({}, {})", x + n, y);
                                         positions.push(((x + n) as usize , y as usize));
                                     }
 
@@ -42,7 +47,6 @@ mod rle_reader {
                                     num_chars = String::from("");
                                 } else {
                                     // Just one 'o
-                                    println!("({}, {})", x, y);
                                     positions.push((x as usize, y as usize));
                                     x += 1;
                                 }

@@ -4,14 +4,13 @@ extern crate sdl2;
 
 use gol::world::{Position, World};
 use gol::gl_renderer::gl_renderer;
-#[allow(unused_imports)]
-use gol::text_renderer::text_renderer;
+use gol::rle_reader::rle_reader;
 
 fn main() {
     let size = 50;
-    let world = World::new(combination(), size);
+    let positions = rle_reader::read("./res/twogun.lif");
+    let world = World::new(positions, size);
     gl_renderer::render(&world);
-    // text_renderer::render(&world);
 }
 #[allow(dead_code)]
 fn combination() -> Vec<Position> {
