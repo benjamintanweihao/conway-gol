@@ -7,13 +7,14 @@ pub mod gl_renderer {
     use std::{thread, time};
     use gol::world::World;
 
-    const CELL_SIZE: u32 = 4;
+    const CELL_SIZE: u32 = 1;
 
     pub fn render(world: &World) -> () {
         let sdl_context = ::sdl2::init().unwrap();
         let video_subsystem = sdl_context.video().unwrap();
+        let size : u32 = world.size as u32 * CELL_SIZE;
         let window = video_subsystem
-            .window("Conway's Game of Life", 800, 600)
+            .window("Conway's Game of Life", size, size)
             .position_centered()
             .opengl()
             .build()
@@ -25,7 +26,7 @@ pub mod gl_renderer {
         canvas.present();
 
         let mut event_pump = sdl_context.event_pump().unwrap();
-        let duration = time::Duration::from_millis(50);
+        let duration = time::Duration::from_millis(200);
 
         let mut world = world.tick();
         let size = world.size;
@@ -54,8 +55,10 @@ pub mod gl_renderer {
                         let _ = canvas.fill_rect(Rect::new(
                             (x as i32) * (CELL_SIZE as i32),
                             (y as i32) * (CELL_SIZE as i32),
-                            CELL_SIZE - 1,
-                            CELL_SIZE - 1,
+                            // CELL_SIZE - 1,
+                            // CELL_SIZE - 1,
+                            CELL_SIZE,
+                            CELL_SIZE,
                         ));
                     }
                 }
