@@ -4,11 +4,12 @@ extern crate sdl2;
 
 use gol::world::{Position, World};
 use gol::gl_renderer::gl_renderer;
+#[allow(unused_imports)]
 use gol::text_renderer::text_renderer;
 
 fn main() {
     let world = World::new(combination());
-    gl_renderer::render(world);
+    gl_renderer::render(&world);
     // text_renderer::render(world);
 }
 #[allow(dead_code)]

@@ -9,7 +9,7 @@ pub mod gl_renderer {
 
     const CELL_SIZE: u32 = 4;
 
-    pub fn render(world: World) -> () {
+    pub fn render(world: &World) -> () {
         let sdl_context = ::sdl2::init().unwrap();
         let video_subsystem = sdl_context.video().unwrap();
         let window = video_subsystem
@@ -27,7 +27,7 @@ pub mod gl_renderer {
         let mut event_pump = sdl_context.event_pump().unwrap();
         let duration = time::Duration::from_millis(50);
 
-        let mut world = world;
+        let mut world = world.tick();
 
         'running: loop {
             for event in event_pump.poll_iter() {
@@ -40,8 +40,6 @@ pub mod gl_renderer {
                     _ => {}
                 }
             }
-
-            world = world.tick();
 
             canvas.set_draw_color(Color::RGB(0, 0, 0));
             canvas.clear();
@@ -65,6 +63,7 @@ pub mod gl_renderer {
             canvas.present();
 
             thread::sleep(duration);
+            world = world.tick();
         }
     }
 }

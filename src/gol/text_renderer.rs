@@ -3,8 +3,8 @@ pub mod text_renderer {
     use std::{thread, time};
     use gol::world::{World, SIZE};
 
-    pub fn render(world: World) -> () {
-        let mut world = world;
+    pub fn render(world: &World) -> () {
+        let mut world = world.tick();
         let duration = time::Duration::from_millis(100);
 
         loop {
