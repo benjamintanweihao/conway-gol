@@ -95,7 +95,7 @@ mod test {
     #[test]
     fn read_glider() {
         let expected = vec![(0, 0), (1, 0), (2, 0), (2, 1), (1, 2)];
-        let actual = rle_reader::read("./res/glider.rle");
+        let (_, actual) = rle_reader::read("./res/glider.rle");
 
         assert_eq!(expected, actual)
     }
