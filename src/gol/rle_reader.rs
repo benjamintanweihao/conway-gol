@@ -1,22 +1,24 @@
 pub mod rle_reader {
+    use std::cmp;
     use std::io::BufReader;
     use std::io::BufRead;
     use std::fs::File;
     use gol::world::Position;
 
-    pub fn read(path: &str) -> Vec<Position> {
+    pub fn read(path: &str) -> (usize, Vec<Position>) {
         let f = File::open(path).expect("file not found");
         let file = BufReader::new(&f);
         let mut positions = Vec::new();
 
         let mut x = 0;
         let mut y = 0;
+        let mut size = 0;
 
         'outer: for (n, line) in file.lines().enumerate() {
             let l = line.unwrap();
+
             if n == 0 {
-                // TODO: Read header and return the size.
-                println!("Header: {}", l);
+                size = parse_header_for_size(l);
             } else {
                 let mut num_chars = String::from(""); // used to track numbers
                 for c in l.chars() {
@@ -40,7 +42,7 @@ pub mod rle_reader {
                                     let num = num_chars.parse::<i32>().unwrap();
                                     // Create number of o's
                                     for n in 0..num {
-                                        positions.push(((x + n) as usize , y as usize));
+                                        positions.push(((x + n) as usize, y as usize));
                                     }
 
                                     x += num;
@@ -68,7 +70,21 @@ pub mod rle_reader {
             }
         }
 
-        return positions;
+        return (size as usize, positions);
+    }
+
+    fn parse_header_for_size(line: String) -> usize {
+        let l1 = line.replace(" ", "");
+        let l2 = l1.split(',').collect::<Vec<_>>();
+        let l3 = &l2[0..2];
+        let l4 = l3.iter()
+            .flat_map(|&x| x.split('=').collect::<Vec<_>>())
+            .collect::<Vec<_>>();
+
+        let x = l4[1].parse::<i32>().unwrap();
+        let y = l4[3].parse::<i32>().unwrap();
+
+        cmp::max(x, y) as usize
     }
 }
 

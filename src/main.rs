@@ -7,8 +7,7 @@ use gol::gl_renderer::gl_renderer;
 use gol::rle_reader::rle_reader;
 
 fn main() {
-    let size = 664;
-    let positions = rle_reader::read("./res/cordership.rle");
+    let (size, positions) = rle_reader::read("./res/p416.rle");
     let world = World::new(positions, size);
     gl_renderer::render(&world);
 }

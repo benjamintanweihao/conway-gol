@@ -8,7 +8,7 @@ Me learning some Rust.
 
 - [X] Implement the GoL logic, with a text renderer
 - [X] Render a grid in SDL
-- [ ] Implement a [suitable format](http://golly.sourceforge.net/Help/formats.html) to read GoL patterns
+- [X] Implement a [suitable format](http://golly.sourceforge.net/Help/formats.html) to read GoL patterns
 - [ ] Implement the [Hashlife algorithm](https://en.wikipedia.org/wiki/Hashlife)
 
 ## Rules
@@ -17,3 +17,7 @@ Me learning some Rust.
 1. Any live cell with two or three live neighbours lives on to the next generation.
 1. Any live cell with more than three live neighbours dies, as if by overpopulation.
 1. Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
+
+## Demo
+
+[![](https://i.imgur.com/MhL9mCX.png)](https://www.youtube.com/watch?v=gLmGns2qug0)

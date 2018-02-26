@@ -7,12 +7,16 @@ pub mod gl_renderer {
     use std::{thread, time};
     use gol::world::World;
 
-    const CELL_SIZE: u32 = 1;
-
     pub fn render(world: &World) -> () {
+        let (cell_size, draw_cell_size) = match world.size {
+            0...400 => (4, 3),
+            401...500 => (2, 2),
+            _ => (1, 1),
+        };
+
         let sdl_context = ::sdl2::init().unwrap();
         let video_subsystem = sdl_context.video().unwrap();
-        let size : u32 = world.size as u32 * CELL_SIZE;
+        let size: u32 = world.size as u32 * cell_size;
         let window = video_subsystem
             .window("Conway's Game of Life", size, size)
             .resizable()
@@ -21,9 +25,7 @@ pub mod gl_renderer {
             .build()
             .unwrap();
 
-        let mut canvas = window.into_canvas()
-            .present_vsync()
-            .build().unwrap();
+        let mut canvas = window.into_canvas().present_vsync().build().unwrap();
         canvas.set_draw_color(Color::RGB(0, 0, 0));
         canvas.clear();
         canvas.present();
@@ -56,12 +58,10 @@ pub mod gl_renderer {
                 for x in 0..size {
                     if world.is_alive((x, y)) == true {
                         let _ = canvas.fill_rect(Rect::new(
-                            (x as i32) * (CELL_SIZE as i32),
-                            (y as i32) * (CELL_SIZE as i32),
-                            // CELL_SIZE - 1,
-                            // CELL_SIZE - 1,
-                            CELL_SIZE,
-                            CELL_SIZE,
+                            (x as i32) * (cell_size as i32),
+                            (y as i32) * (cell_size as i32),
+                            draw_cell_size,
+                            draw_cell_size,
                         ));
                     }
                 }
