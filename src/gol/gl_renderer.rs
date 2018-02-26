@@ -15,12 +15,15 @@ pub mod gl_renderer {
         let size : u32 = world.size as u32 * CELL_SIZE;
         let window = video_subsystem
             .window("Conway's Game of Life", size, size)
+            .resizable()
             .position_centered()
             .opengl()
             .build()
             .unwrap();
 
-        let mut canvas = window.into_canvas().build().unwrap();
+        let mut canvas = window.into_canvas()
+            .present_vsync()
+            .build().unwrap();
         canvas.set_draw_color(Color::RGB(0, 0, 0));
         canvas.clear();
         canvas.present();
