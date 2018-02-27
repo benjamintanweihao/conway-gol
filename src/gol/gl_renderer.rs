@@ -27,6 +27,9 @@ pub mod gl_renderer {
 
         let mut canvas = window.into_canvas().present_vsync().build().unwrap();
         canvas.set_draw_color(Color::RGB(0, 0, 0));
+
+        // TODO: Compute the correct scale to use so that we can see the entire pattern.
+        let _ = canvas.set_scale(0.6, 0.6);
         canvas.clear();
         canvas.present();
 

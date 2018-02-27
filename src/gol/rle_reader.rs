@@ -14,11 +14,13 @@ pub mod rle_reader {
         let mut y = 0;
         let mut size = 0;
 
-        'outer: for (n, line) in file.lines().enumerate() {
+        'outer: for line in file.lines() {
             let l = line.unwrap();
 
-            if n == 0 {
+            if l.starts_with("x") == true {
                 size = parse_header_for_size(l);
+            } else if l.starts_with("#") == true {
+                continue;
             } else {
                 let mut num_chars = String::from(""); // used to track numbers
                 for c in l.chars() {
