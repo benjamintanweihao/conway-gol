@@ -29,7 +29,7 @@ pub mod gl_renderer {
         canvas.set_draw_color(Color::RGB(0, 0, 0));
 
         // TODO: Compute the correct scale to use so that we can see the entire pattern.
-        let _ = canvas.set_scale(0.6, 0.6);
+        let _ = canvas.set_scale(1.0, 1.0);
         canvas.clear();
         canvas.present();
 
